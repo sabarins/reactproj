@@ -1,0 +1,19 @@
+body
+{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+table
+{
+    border: 1px solid black;
+    margin:20px;
+}
+.tab
+{
+    padding: 20px;
+}
+.item
+{
+    padding:10px 0px 0px 20px;
+}
