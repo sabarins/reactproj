@@ -1,0 +1,34 @@
+import axios from 'axios';
+import {useState,useEffect} from 'react'
+export default function Navbar()
+{
+    let [users, setUsers] = useState([]);
+
+  useEffect(function () {
+    fetch("https://rss.dinamalar.com/internal/menu.asp")
+      .then((res) => res.json())
+      .then((response) => {
+        setUsers(response);
+        console.log(response);
+      });
+    console.log("working");
+  }, []);
+    return(
+        <div className="navbar">
+            <h1>Welcome Navbar</h1>
+            <div className="nav">
+                {
+                    users.map((ele,ind)=>
+                    {
+                        
+                        return(
+                            <div>
+                               <p><span><img src={ele.icon}></img></span>{ele.name}</p>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        </div>
+    )
+}
