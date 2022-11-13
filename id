@@ -1,0 +1,98 @@
+import { useRouter } from "next/router";
+import axios from 'axios';
+import Image from 'next/image'
+import { useEffect, useState } from "react";
+
+export default function Route({ruser}) {
+   
+    const r = useRouter();
+    let ch = ruser.item;
+    // console.log( Object.keys(ch).slice(8,9));
+
+    return(
+        <div>
+            <p>welcome {r.query.id}</p>
+            <div className="detail-title">
+                <h1>{ruser.item.title}</h1>
+            </div>
+            <div className="bodydesc">
+                <p>{ruser.item.guid}</p>
+                {
+                    Object.keys(ch).slice(8,9).map((e)=>
+                    {
+                        return(
+                            <div>
+                                {
+                                    ch[e].map((el,ind)=>
+                                    {
+                                        console.log(ch[e],ind);
+                                        if(el.id=="3")
+                                        {
+                                            console.log(ind);
+                                            return(
+                                                <div className="imagess">
+                                                    <img src={ruser.item.StoryImage}  style={{ backgroundColor: "light-grey", display:"block", width: "500px", height: "200px", cursor: "pointer", marginRight: "30px", marginTop: "20px" }} />
+                                                    <p>{el.content}</p>
+
+                                                </div>                                              
+                                            )
+                                        }
+                                        if(el.id=="4" && el.audioLink!="")
+                                        {
+                                            console.log(ind);
+                                            return(
+                                                <div className="imagess">
+                                                    <audio controls>
+                                                        <source src={el.audioLink} type="audio/mp3"></source>
+                                                        <source src={el.audioLink} type="audio/ogg"></source>
+                                                    </audio>
+                                                    <p>{el.content}</p>
+
+                                                </div>                                              
+                                            )
+                                        }
+                                if(el.id=='5')
+                                {
+                                    return(
+                                        <div>
+                                            <video width="500" height="240" controls>
+                                            <source src={el.videoLink} type="video/webm"></source>
+                                               <source src={el.videoLink} type="video/mp4"></source>
+                                               <source src={el.videoLink} type="video/ogg"></source>
+
+                                            </video>
+                                            {/* <iframe width="500" height="200" src={el.videoLink}  allowfullscreen>
+
+                                            </iframe> */}
+                                            <p>{el.content}</p>
+                                        </div>
+                                    )
+                                }                                    
+                                        return(
+                                            <div>
+                                                 <p>{el.content}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        )
+                    })
+                }
+              
+            </div>
+            
+        </div>
+    )
+}
+
+export async function getServerSideProps(context) {
+
+    const response = await axios.get(`https://rss.dinamalar.com/internal/detail.asp?Id=${context.query.id}`);
+    return {
+      props:
+      {
+        ruser: response.data,
+      },
+    };
+  }  
